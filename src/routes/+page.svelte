@@ -7,6 +7,7 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import NumberInput from './number-input.svelte';
+	import ThemeSwitch from './theme-switch.svelte';
 
 	let attackers: number = 0;
 	let attackerCardboard: number = 0;
@@ -56,9 +57,10 @@
 </script>
 
 <div class="block mx-auto container max-w-lg">
-	<h1 class="scroll-m-20 text-2xl font-extrabold tracking-tight mt-8 mb-4">
-		Root Dice Roll Calculator
-	</h1>
+	<div class="flex justify-between items-center mt-6 mb-4">
+		<h1 class="scroll-m-20 text-2xl font-extrabold tracking-tight">Root Dice Roll Calculator</h1>
+		<ThemeSwitch />
+	</div>
 	<div class="flex flex-col gap-4">
 		<NumberInput
 			id="attackers"
@@ -129,7 +131,9 @@
 				<Dialog.Header>
 					<Dialog.Title>Battle Results</Dialog.Title>
 				</Dialog.Header>
-				<p class="bg-muted text-muted-foreground p-4 text-sm font-mono whitespace-pre-line">
+				<p
+					class="bg-muted text-muted-foreground p-4 text-sm font-mono whitespace-pre-line rounded-sm"
+				>
 					{results}
 				</p>
 			</Dialog.Content>

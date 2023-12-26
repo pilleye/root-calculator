@@ -1,8 +1,10 @@
 <script>
 	import { Button } from '$lib/components/ui/button';
+	import { ModeWatcher } from 'mode-watcher';
 	import '../app.postcss';
 </script>
 
+<ModeWatcher />
 <div class="flex flex-col min-h-screen items-stretch">
 	<div class="block flex-grow">
 		<slot />
