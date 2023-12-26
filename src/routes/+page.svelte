@@ -56,7 +56,7 @@
 </script>
 
 <div class="block mx-auto container max-w-lg">
-	<h1 class="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-5xl mt-8 mb-4">
+	<h1 class="scroll-m-20 text-2xl font-extrabold tracking-tight mt-8 mb-4">
 		Root Dice Roll Calculator
 	</h1>
 	<div class="flex flex-col gap-4">
