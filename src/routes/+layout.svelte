@@ -4,6 +4,13 @@
 	import '../app.postcss';
 </script>
 
+<svelte:head>
+	<script
+		defer
+		data-domain="root.pilleye.dev"
+		src="https://plausible.pillai.io/js/script.js"
+	></script>
+</svelte:head>
 <ModeWatcher />
 <div class="flex flex-col min-h-screen items-stretch">
 	<div class="block flex-grow">
