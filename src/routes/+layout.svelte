@@ -10,6 +10,7 @@
 		data-domain="root.pilleye.dev"
 		src="https://plausible.pillai.io/js/script.js"
 	></script>
+	<title>Root Calculator</title>
 </svelte:head>
 <ModeWatcher />
 <div class="flex flex-col min-h-screen items-stretch">
