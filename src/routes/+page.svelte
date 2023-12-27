@@ -60,7 +60,6 @@
 	);
 
 	$: valid = $allErrors.length === 0;
-	$: console.log($allErrors);
 
 	let dialogOpen: boolean = false;
 	let results: string = '';
