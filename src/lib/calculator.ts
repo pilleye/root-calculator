@@ -131,7 +131,7 @@ export function calculate(situation: Situation, config: Config, numBattles: numb
 		let won = situations.filter(hasWon).length;
 
 		resultString += `Simulating round ${i + 1}, win %: ${
-			Math.round((won / situations.length) * 1000) / 10
+			Math.round((won / situations.length) * 10000) / 100
 		}%\n`;
 	}
 
@@ -141,14 +141,14 @@ export function calculate(situation: Situation, config: Config, numBattles: numb
 		situations.reduce((acc, situation) => {
 			return acc + situation.pieces.attackers;
 		}, 0) / situations.length;
-	averageAttackerRemaining = Math.round(averageAttackerRemaining * 10) / 10;
+	averageAttackerRemaining = Math.round(averageAttackerRemaining * 100) / 100;
 	resultString += `Average attackers remaining: ${averageAttackerRemaining}\n`;
 
 	let averageDefenderRemaining =
 		situations.reduce((acc, situation) => {
 			return acc + situation.pieces.defenders;
 		}, 0) / situations.length;
-	averageDefenderRemaining = Math.round(averageDefenderRemaining * 10) / 10;
+	averageDefenderRemaining = Math.round(averageDefenderRemaining * 100) / 100;
 	resultString += `Average defenders remaining: ${averageDefenderRemaining}\n`;
 
 	return resultString;
