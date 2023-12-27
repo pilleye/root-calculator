@@ -45,7 +45,8 @@
 		{min}
 		aria-invalid={ariaInvalid}
 		on:input={handleInput}
-		class={cn({ 'border-destructive': errors && errors.length > 0 })}
+		pattern="[0-9]*"
+		class={cn('text-base', { 'border-destructive': errors && errors.length > 0 })}
 		{...constraints}
 	/>
 	{#if errors && errors.length > 0}
