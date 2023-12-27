@@ -13,13 +13,15 @@
 	export let tooltip: string | undefined = undefined;
 	export let min: number = 0;
 	export let constraints: any;
+	let className: string = '';
+	export { className as class };
 
-	const handleInput = (e) => {
+	const handleInput = (e: any) => {
 		value = +e.target.value;
 	};
 </script>
 
-<div class="flex flex-col gap-1 items-start">
+<div class={cn('flex flex-col gap-1 items-start', className)}>
 	<Label for={id} class="flex flex-col gap-1">
 		{#if tooltip}
 			<Tooltip.Root>

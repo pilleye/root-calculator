@@ -70,15 +70,16 @@
 		<h1 class="scroll-m-20 text-2xl font-extrabold tracking-tight">Root Dice Roll Calculator</h1>
 		<ThemeSwitch />
 	</div>
-	<form class="flex flex-col gap-4" use:enhance method="POST">
+	<form class="grid grid-cols-2 gap-4" use:enhance method="POST">
 		{#if $errors._errors?.length && $errors._errors.length > 0}
 			<div
-				class="bg-brand-red flex w-full items-center gap-3 px-3 py-2 text-sm font-semibold text-white"
+				class="col-span-2 bg-brand-red flex w-full items-center gap-3 px-3 py-2 text-sm font-semibold text-white"
 			>
 				<AlertTriangleIcon class="h-6 w-6 shrink-0" />
 				<span>{$errors._errors[0]}</span>
 			</div>
 		{/if}
+		<div class="col-span-2 text-lg font-bold tracking-tight">Attackers</div>
 		<NumberInput
 			id="attackers"
 			bind:value={$form.attackers}
@@ -93,7 +94,7 @@
 			bind:value={$form.attackerCardboard}
 			errors={$errors.attackerCardboard}
 			ariaInvalid={$errors.attackerCardboard ? 'true' : 'false'}
-			label="Attacker Cardboard"
+			label="Cardboard"
 			tooltip="Number of attacker cardboard pieces"
 			constraints={$constraints.attackerCardboard}
 		/>
@@ -101,7 +102,7 @@
 			id="attackerDamageBonus"
 			bind:value={$form.attackerDamageBonus}
 			errors={$errors.attackerDamageBonus}
-			label="Attacker Damage Bonus"
+			label="Damage Bonus"
 			tooltip="Damage bonus inflicted by the attacker every round (i.e. Rat's Wrathful)"
 			constraints={$constraints.attackerDamageBonus}
 		/>
@@ -109,10 +110,11 @@
 			id="attackerShieldBonus"
 			bind:value={$form.attackerShieldBonus}
 			errors={$errors.attackerShieldBonus}
-			label="Attacker Shielding Bonus"
+			label="Shielding Bonus"
 			tooltip="Damage ignored by the attacker every round (i.e. Rat's Stubborn)"
 			constraints={$constraints.attackerShieldBonus}
 		/>
+		<div class="col-span-2 text-lg font-bold tracking-tight">Defenders</div>
 		<NumberInput
 			id="defenders"
 			bind:value={$form.defenders}
@@ -125,7 +127,7 @@
 			id="defenderCardboard"
 			bind:value={$form.defenderCardboard}
 			errors={$errors.defenderCardboard}
-			label="Defender Cardboard"
+			label="Cardboard"
 			tooltip="Number of defender cardboard pieces"
 			constraints={$constraints.defenderCardboard}
 		/>
@@ -133,7 +135,7 @@
 			id="defenderDamageBonus"
 			bind:value={$form.defenderDamageBonus}
 			errors={$errors.defenderDamageBonus}
-			label="Defender Damage Bonus"
+			label="Damage Bonus"
 			tooltip="Damage bonus inflicted by the defender every round (i.e. Mouse Partisans)"
 			constraints={$constraints.defenderDamageBonus}
 		/>
@@ -141,11 +143,11 @@
 			id="defenderShieldBonus"
 			bind:value={$form.defenderShieldBonus}
 			errors={$errors.defenderShieldBonus}
-			label="Defender Shielding Bonus"
+			label="Shielding Bonus"
 			tooltip="Damage ignored by the defender every round (i.e. Rat's Stubborn)"
 			constraints={$constraints.defenderShieldBonus}
 		/>
-		<div class="flex items-center space-x-2 ml-1">
+		<div class="flex items-center space-x-2 ml-1 col-span-2">
 			<Checkbox
 				id="againstWoodland"
 				bind:checked={$form.againstWoodland}
@@ -156,7 +158,7 @@
 				id="againstWoodland-label"
 				for="againstWoodland"
 				class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-				>Defender Takes High Roll (i.e. Fighting Woodland)</Label
+				>Defender Takes High Roll</Label
 			>
 		</div>
 		<NumberInput
@@ -167,8 +169,9 @@
 			min={1}
 			tooltip="Number of battles to simulate"
 			constraints={$constraints.numBattles}
+			class="col-span-2"
 		/>
-		<Button type="submit" disabled={!valid || $submitting}>
+		<Button type="submit" disabled={!valid || $submitting} class="col-span-2">
 			{#if $submitting}
 				<Loader2 class="mr-2 h-4 w-4 animate-spin" />
 				Calculating
