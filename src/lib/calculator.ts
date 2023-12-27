@@ -142,14 +142,14 @@ export function calculate(situation: Situation, config: Config, numBattles: numb
 			return acc + situation.pieces.attackers;
 		}, 0) / situations.length;
 	averageAttackerRemaining = Math.round(averageAttackerRemaining * 10) / 10;
-	resultString += `Average attacker pieces remaining: ${averageAttackerRemaining}\n`;
+	resultString += `Average attackers remaining: ${averageAttackerRemaining}\n`;
 
 	let averageDefenderRemaining =
 		situations.reduce((acc, situation) => {
 			return acc + situation.pieces.defenders;
 		}, 0) / situations.length;
 	averageDefenderRemaining = Math.round(averageDefenderRemaining * 10) / 10;
-	resultString += `Average defender pieces remaining: ${averageDefenderRemaining}\n`;
+	resultString += `Average defenders remaining: ${averageDefenderRemaining}\n`;
 
 	return resultString;
 }

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Loader2 } from 'lucide-svelte';
+	import { AlertTriangleIcon, Loader2 } from 'lucide-svelte';
+	import { setError, superForm, superValidateSync } from 'sveltekit-superforms/client';
 
 	import { calculate } from '$lib/calculator';
 	import { Checkbox } from '$lib/components/ui/checkbox';
@@ -8,52 +9,61 @@
 	import * as Dialog from '$lib/components/ui/dialog';
 	import NumberInput from './number-input.svelte';
 	import ThemeSwitch from './theme-switch.svelte';
+	import { inputSchema } from './schema';
 
-	let attackers: number = 0;
-	let attackerCardboard: number = 0;
-	let attackerDamageBonus: number = 0;
-	let attackerShieldBonus: number = 0;
-	let defenders: number = 0;
-	let defenderCardboard: number = 0;
-	let defenderDamageBonus: number = 0;
-	let defenderShieldBonus: number = 0;
-	let numBattles: number = 1;
-	let againstWoodland: boolean = false;
+	const { form, errors, constraints, enhance, allErrors, submitting } = superForm(
+		superValidateSync(inputSchema),
+		{
+			SPA: true,
+			taintedMessage: null,
+			validators: inputSchema,
+			async onUpdate({ form }) {
+				if (!form.valid) {
+					return;
+				}
 
-	let calculating: boolean = false;
+				const {
+					attackers,
+					attackerCardboard,
+					defenders,
+					defenderCardboard,
+					againstWoodland,
+					attackerDamageBonus,
+					attackerShieldBonus,
+					defenderDamageBonus,
+					defenderShieldBonus,
+					numBattles
+				} = form.data;
+
+				results = calculate(
+					{
+						pieces: {
+							attackers,
+							attackerCardboard,
+							defenders,
+							defenderCardboard
+						}
+					},
+					{
+						againstWoodland,
+						attackerDamageBonus,
+						attackerShieldBonus,
+						defenderDamageBonus,
+						defenderShieldBonus
+					},
+					numBattles
+				);
+
+				dialogOpen = true;
+			}
+		}
+	);
+
+	$: valid = $allErrors.length === 0;
+	$: console.log($allErrors);
+
 	let dialogOpen: boolean = false;
 	let results: string = '';
-
-	function toInt(value: string | number): number {
-		return parseInt(value.toString() || '0');
-	}
-
-	function runCalculate() {
-		calculating = true;
-
-		const result = calculate(
-			{
-				pieces: {
-					attackers: toInt(attackers),
-					attackerCardboard: toInt(attackerCardboard),
-					defenders: toInt(defenders),
-					defenderCardboard: toInt(defenderCardboard)
-				}
-			},
-			{
-				againstWoodland,
-				attackerDamageBonus: toInt(attackerDamageBonus),
-				attackerShieldBonus: toInt(attackerShieldBonus),
-				defenderDamageBonus: toInt(defenderDamageBonus),
-				defenderShieldBonus: toInt(defenderShieldBonus)
-			},
-			toInt(numBattles.toString() || '1')
-		);
-
-		results = result;
-		dialogOpen = true;
-		calculating = false;
-	}
 </script>
 
 <div class="block mx-auto container max-w-lg">
@@ -61,60 +71,78 @@
 		<h1 class="scroll-m-20 text-2xl font-extrabold tracking-tight">Root Dice Roll Calculator</h1>
 		<ThemeSwitch />
 	</div>
-	<div class="flex flex-col gap-4">
+	<form class="flex flex-col gap-4" use:enhance method="POST">
+		{#if $errors._errors?.length && $errors._errors.length > 0}
+			<div
+				class="bg-brand-red flex w-full items-center gap-3 px-3 py-2 text-sm font-semibold text-white"
+			>
+				<AlertTriangleIcon class="h-6 w-6 shrink-0" />
+				<span>{$errors._errors[0]}</span>
+			</div>
+		{/if}
 		<NumberInput
 			id="attackers"
-			bind:value={attackers}
+			bind:value={$form.attackers}
+			ariaInvalid={$errors.attackers ? 'true' : 'false'}
 			label="Attackers"
 			tooltip="Number of Attackers"
+			constraints={$constraints.attackers}
 		/>
 		<NumberInput
 			id="attackerCardboard"
-			bind:value={attackerCardboard}
+			bind:value={$form.attackerCardboard}
 			label="Attacker Cardboard"
 			tooltip="Number of attacker cardboard pieces"
+			constraints={$constraints.attackerCardboard}
 		/>
 		<NumberInput
 			id="attackerDamageBonus"
-			bind:value={attackerDamageBonus}
+			bind:value={$form.attackerDamageBonus}
 			label="Attacker Damage Bonus"
 			tooltip="Damage bonus inflicted by the attacker every round (i.e. Rat's Wrathful)"
+			constraints={$constraints.attackerDamageBonus}
 		/>
 		<NumberInput
 			id="attackerShieldBonus"
-			bind:value={attackerShieldBonus}
+			bind:value={$form.attackerShieldBonus}
 			label="Attacker Shielding Bonus"
 			tooltip="Damage ignored by the attacker every round (i.e. Rat's Stubborn)"
+			constraints={$constraints.attackerShieldBonus}
 		/>
 		<NumberInput
 			id="defenders"
-			bind:value={defenders}
+			bind:value={$form.defenders}
 			label="Defenders"
 			tooltip="Number of Defenders"
+			constraints={$constraints.defenders}
 		/>
 		<NumberInput
 			id="defenderCardboard"
-			bind:value={defenderCardboard}
+			bind:value={$form.defenderCardboard}
 			label="Defender Cardboard"
 			tooltip="Number of defender cardboard pieces"
+			constraints={$constraints.defenderCardboard}
 		/>
 		<NumberInput
 			id="defenderDamageBonus"
-			bind:value={defenderDamageBonus}
+			bind:value={$form.defenderDamageBonus}
 			label="Defender Damage Bonus"
 			tooltip="Damage bonus inflicted by the defender every round (i.e. Mouse Partisans)"
+			constraints={$constraints.defenderDamageBonus}
 		/>
 		<NumberInput
 			id="defenderShieldBonus"
-			bind:value={defenderShieldBonus}
+			bind:value={$form.defenderShieldBonus}
 			label="Defender Shielding Bonus"
 			tooltip="Damage ignored by the defender every round (i.e. Rat's Stubborn)"
+			constraints={$constraints.defenderShieldBonus}
 		/>
 		<div class="flex items-center space-x-2 ml-1">
 			<Checkbox
 				id="againstWoodland"
-				bind:checked={againstWoodland}
+				bind:checked={$form.againstWoodland}
 				aria-labelledby="againstWoodland-label"
+				{...$constraints.againstWoodland}
 			/>
 			<Label
 				id="againstWoodland-label"
@@ -123,8 +151,23 @@
 				>Defender Takes High Roll (i.e. Fighting Woodland)</Label
 			>
 		</div>
-		<NumberInput id="numBattles" bind:value={numBattles} label="Number of Battles" min={1} />
-
+		<NumberInput
+			id="numBattles"
+			bind:value={$form.numBattles}
+			errors={$errors.numBattles}
+			label="Number of Battles"
+			min={1}
+			tooltip="Number of battles to simulate"
+			constraints={$constraints.numBattles}
+		/>
+		<Button type="submit" disabled={!valid || $submitting}>
+			{#if $submitting}
+				<Loader2 class="mr-2 h-4 w-4 animate-spin" />
+				Calculating
+			{:else}
+				Calculate
+			{/if}
+		</Button>
 		<Dialog.Root bind:open={dialogOpen}>
 			<Dialog.Trigger />
 			<Dialog.Content>
@@ -138,13 +181,5 @@
 				</p>
 			</Dialog.Content>
 		</Dialog.Root>
-		<Button type="button" on:click={runCalculate} disabled={calculating}>
-			{#if calculating}
-				<Loader2 class="mr-2 h-4 w-4 animate-spin" />
-				Calculating
-			{:else}
-				Calculate
-			{/if}
-		</Button>
-	</div>
+	</form>
 </div>
