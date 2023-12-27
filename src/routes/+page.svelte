@@ -83,6 +83,7 @@
 		<NumberInput
 			id="attackers"
 			bind:value={$form.attackers}
+			errors={$errors.attackers}
 			ariaInvalid={$errors.attackers ? 'true' : 'false'}
 			label="Attackers"
 			tooltip="Number of Attackers"
@@ -91,6 +92,8 @@
 		<NumberInput
 			id="attackerCardboard"
 			bind:value={$form.attackerCardboard}
+			errors={$errors.attackerCardboard}
+			ariaInvalid={$errors.attackerCardboard ? 'true' : 'false'}
 			label="Attacker Cardboard"
 			tooltip="Number of attacker cardboard pieces"
 			constraints={$constraints.attackerCardboard}
@@ -98,6 +101,7 @@
 		<NumberInput
 			id="attackerDamageBonus"
 			bind:value={$form.attackerDamageBonus}
+			errors={$errors.attackerDamageBonus}
 			label="Attacker Damage Bonus"
 			tooltip="Damage bonus inflicted by the attacker every round (i.e. Rat's Wrathful)"
 			constraints={$constraints.attackerDamageBonus}
@@ -105,6 +109,7 @@
 		<NumberInput
 			id="attackerShieldBonus"
 			bind:value={$form.attackerShieldBonus}
+			errors={$errors.attackerShieldBonus}
 			label="Attacker Shielding Bonus"
 			tooltip="Damage ignored by the attacker every round (i.e. Rat's Stubborn)"
 			constraints={$constraints.attackerShieldBonus}
@@ -112,6 +117,7 @@
 		<NumberInput
 			id="defenders"
 			bind:value={$form.defenders}
+			errors={$errors.defenders}
 			label="Defenders"
 			tooltip="Number of Defenders"
 			constraints={$constraints.defenders}
@@ -119,6 +125,7 @@
 		<NumberInput
 			id="defenderCardboard"
 			bind:value={$form.defenderCardboard}
+			errors={$errors.defenderCardboard}
 			label="Defender Cardboard"
 			tooltip="Number of defender cardboard pieces"
 			constraints={$constraints.defenderCardboard}
@@ -126,6 +133,7 @@
 		<NumberInput
 			id="defenderDamageBonus"
 			bind:value={$form.defenderDamageBonus}
+			errors={$errors.defenderDamageBonus}
 			label="Defender Damage Bonus"
 			tooltip="Damage bonus inflicted by the defender every round (i.e. Mouse Partisans)"
 			constraints={$constraints.defenderDamageBonus}
@@ -133,6 +141,7 @@
 		<NumberInput
 			id="defenderShieldBonus"
 			bind:value={$form.defenderShieldBonus}
+			errors={$errors.defenderShieldBonus}
 			label="Defender Shielding Bonus"
 			tooltip="Damage ignored by the defender every round (i.e. Rat's Stubborn)"
 			constraints={$constraints.defenderShieldBonus}
