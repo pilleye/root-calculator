@@ -1,6 +1,8 @@
 <script lang="ts">
   import { AlertTriangleIcon, Loader2 } from 'lucide-svelte';
-  import { setError, superForm, superValidateSync } from 'sveltekit-superforms/client';
+  import { defaults } from 'sveltekit-superforms';
+  import { superForm } from 'sveltekit-superforms/client';
+  import { zod } from 'sveltekit-superforms/adapters';
 
   import { calculate } from '$lib/calculator';
   import { Checkbox } from '$lib/components/ui/checkbox';
@@ -12,11 +14,11 @@
   import { inputSchema } from './schema';
 
   const { form, errors, constraints, enhance, allErrors, submitting } = superForm(
-    superValidateSync(inputSchema),
+    defaults(zod(inputSchema)),
     {
       SPA: true,
       taintedMessage: null,
-      validators: inputSchema,
+      validators: zod(inputSchema),
       async onUpdate({ form }) {
         if (!form.valid) {
           return;
@@ -59,10 +61,10 @@
     },
   );
 
-  $: valid = $allErrors.length === 0;
+  let valid = $derived($allErrors.length === 0);
 
-  let dialogOpen: boolean = false;
-  let results: string = '';
+  let dialogOpen: boolean = $state(false);
+  let results: string = $state('');
 </script>
 
 <div class="block mx-auto container max-w-lg">

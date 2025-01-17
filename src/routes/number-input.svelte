@@ -5,16 +5,29 @@
   import { cn } from '$lib/utils';
   import type { Booleanish } from 'svelte/elements';
 
-  export let value: number;
-  export let id: string;
-  export let ariaInvalid: Booleanish = 'false';
-  export let errors: string[] | undefined = undefined;
-  export let label: string;
-  export let tooltip: string | undefined = undefined;
-  export let min: number = 0;
-  export let constraints: any;
-  let className: string = '';
-  export { className as class };
+  interface Props {
+    value: number;
+    id: string;
+    ariaInvalid?: Booleanish;
+    errors?: string[] | undefined;
+    label: string;
+    tooltip?: string | undefined;
+    min?: number;
+    constraints: any;
+    class?: string;
+  }
+
+  let {
+    value = $bindable(),
+    id,
+    ariaInvalid = 'false',
+    errors = undefined,
+    label,
+    tooltip = undefined,
+    min = 0,
+    constraints,
+    class: className = '',
+  }: Props = $props();
 
   const handleInput = (e: any) => {
     value = +e.target.value;
@@ -24,16 +37,18 @@
 <div class={cn('flex flex-col gap-1 items-start', className)}>
   <Label for={id} class="flex flex-col gap-1">
     {#if tooltip}
-      <Tooltip.Root>
-        <Tooltip.Trigger>
-          {label}
-        </Tooltip.Trigger>
-        <Tooltip.Content>
-          <p>
-            {tooltip}
-          </p>
-        </Tooltip.Content>
-      </Tooltip.Root>
+      <Tooltip.Provider>
+        <Tooltip.Root>
+          <Tooltip.Trigger>
+            {label}
+          </Tooltip.Trigger>
+          <Tooltip.Content>
+            <p>
+              {tooltip}
+            </p>
+          </Tooltip.Content>
+        </Tooltip.Root>
+      </Tooltip.Provider>
     {:else}
       {label}
     {/if}
@@ -44,7 +59,7 @@
     name={id}
     {min}
     aria-invalid={ariaInvalid}
-    on:input={handleInput}
+    oninput={handleInput}
     pattern="[0-9]*"
     class={cn('text-base focus:text-base', { 'border-destructive': errors && errors.length > 0 })}
     {...constraints}
