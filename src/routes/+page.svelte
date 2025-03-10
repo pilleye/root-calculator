@@ -19,6 +19,7 @@
       SPA: true,
       taintedMessage: null,
       validators: zod(inputSchema),
+      resetForm: false,
       async onUpdate({ form }) {
         if (!form.valid) {
           return;
